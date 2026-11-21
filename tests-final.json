@@ -1,0 +1,59 @@
+[
+  {"name":"S01: обычный запуск и остановка насоса","steps":[
+    {"input":{"humidity":20,"temp":20,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":true,"vent":false,"fault":false,"used":2}},
+    {"input":{"humidity":50,"temp":20,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":false,"used":0}}
+  ]},
+  {"name":"S02: невалидный вход","steps":[
+    {"input":{"humidity":101,"temp":20,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":true,"used":0}}
+  ]},
+  {"name":"S03: устаревший снимок age=31","steps":[
+    {"input":{"humidity":20,"temp":20,"rain":false,"age":31,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":true,"used":0}}
+  ]},
+  {"name":"S04: авария → удержание → сброс","steps":[
+    {"input":{"humidity":20,"temp":20,"rain":false,"age":31,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":true,"used":0}},
+    {"input":{"humidity":50,"temp":20,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":true,"used":0}},
+    {"input":{"humidity":20,"temp":20,"rain":false,"age":0,"tank":50,"budget":5,"reset":true},"expected":{"pump":true,"vent":false,"fault":false,"used":2}}
+  ]},
+  {"name":"S05: вентиляция старт/стоп/удержание","steps":[
+    {"input":{"humidity":50,"temp":30,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":true,"fault":false,"used":3}},
+    {"input":{"humidity":50,"temp":26,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":false,"used":0}},
+    {"input":{"humidity":50,"temp":28,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":false,"used":0}},
+    {"input":{"humidity":50,"temp":31,"rain":false,"age":0,"tank":50,"budget":2,"reset":false},"expected":{"pump":false,"vent":false,"fault":false,"used":0}}
+  ]},
+  {"name":"S06: насос — удержание, бюджет, запреты","steps":[
+    {"input":{"humidity":35,"temp":20,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":false,"used":0}},
+    {"input":{"humidity":20,"temp":20,"rain":false,"age":0,"tank":50,"budget":1,"reset":false},"expected":{"pump":false,"vent":false,"fault":false,"used":0}},
+    {"input":{"humidity":20,"temp":3,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":false,"used":0}},
+    {"input":{"humidity":20,"temp":4,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":true,"vent":false,"fault":false,"used":2}},
+    {"input":{"humidity":20,"temp":20,"rain":true,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":false,"used":0}},
+    {"input":{"humidity":20,"temp":20,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":true,"vent":false,"fault":false,"used":2}},
+    {"input":{"humidity":20,"temp":20,"rain":false,"age":0,"tank":9,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":false,"used":0}},
+    {"input":{"humidity":20,"temp":20,"rain":false,"age":0,"tank":10,"budget":5,"reset":false},"expected":{"pump":true,"vent":false,"fault":false,"used":2}}
+  ]},
+  {"name":"S07: бюджет 3 при двух запросах","steps":[
+    {"input":{"humidity":20,"temp":32,"rain":false,"age":0,"tank":50,"budget":3,"reset":false},"expected":{"pump":false,"vent":true,"fault":false,"used":3}}
+  ]},
+  {"name":"S08: humidity=35 граница (BUG-01)","steps":[
+    {"input":{"humidity":35,"temp":20,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":false,"used":0}}
+  ]},
+  {"name":"S09: остановка при 45 (M2)","steps":[
+    {"input":{"humidity":20,"temp":20,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":true,"vent":false,"fault":false,"used":2}},
+    {"input":{"humidity":45,"temp":20,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":false,"used":0}}
+  ]},
+  {"name":"S10: vent старт при 30 (M3)","steps":[
+    {"input":{"humidity":50,"temp":30,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":true,"fault":false,"used":3}}
+  ]},
+  {"name":"S11: age=30 — ещё свежий (M4)","steps":[
+    {"input":{"humidity":50,"temp":20,"rain":false,"age":30,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":false,"used":0}}
+  ]},
+  {"name":"S12: удержание fault (BUG-02)","steps":[
+    {"input":{"humidity":20,"temp":20,"rain":false,"age":31,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":true,"used":0}},
+    {"input":{"humidity":50,"temp":20,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":true,"used":0}}
+  ]},
+  {"name":"S13: cold temp=3 (M7)","steps":[
+    {"input":{"humidity":20,"temp":3,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":false,"used":0}}
+  ]},
+  {"name":"S14: tank=10 разрешает (M8)","steps":[
+    {"input":{"humidity":20,"temp":20,"rain":false,"age":0,"tank":10,"budget":5,"reset":false},"expected":{"pump":true,"vent":false,"fault":false,"used":2}}
+  ]}
+]
