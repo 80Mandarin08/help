@@ -1,0 +1,11 @@
+[
+  {"name":"D21-1: humidity=39 (2.1 включает, 2.0 нет)","steps":[
+    {"input":{"humidity":39,"temp":20,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":true,"vent":false,"fault":false,"used":2}}
+  ]},
+  {"name":"D21-2: humidity=35 (2.1 включает, 2.0 нет)","steps":[
+    {"input":{"humidity":35,"temp":20,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":true,"vent":false,"fault":false,"used":2}}
+  ]},
+  {"name":"D21-3: humidity=45 (обе выключают)","steps":[
+    {"input":{"humidity":45,"temp":20,"rain":false,"age":0,"tank":50,"budget":5,"reset":false},"expected":{"pump":false,"vent":false,"fault":false,"used":0}}
+  ]}
+]
